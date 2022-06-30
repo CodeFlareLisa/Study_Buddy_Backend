@@ -353,8 +353,8 @@ ___
 <details><summary><strong>Daniel Moura</strong></summary>
 <p>
 <li>Collaborated to code topics like Register at Front End with Team UI & Design.</li>
-<li>Formatted descriptions of Flashcards for the successful completion of the project.</li>
-<li>Cooperated for Readme File with Team Documentation.</li>
+<li>Cooperated to format Project and Flashcards descriptions at Readme File with Team Documentation.</li>
+<li>Please let me know either way so I can let him know.  Also, there are not errors in verbiage.</li>
 </p>
 </details>
 <details><summary><strong>Joshua Alfaro</strong></summary>
