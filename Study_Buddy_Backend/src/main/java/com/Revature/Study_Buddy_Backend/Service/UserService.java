@@ -7,31 +7,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// hello
 @Service
 public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public List<User>getAllUser(){
-       return userRepo.findAll();
+    public List<User> getAllUser() {
+        return userRepo.findAll();
     }
 
-    public User getUserById(Long id){
-        return userRepo.findById(id).get();
+    public User getUserById(Long userId) {
+        return userRepo.findByuserId(userId);
     }
 
-    public User addUser(User user){
+    public void addUser(User user) {
+        userRepo.save(user);
+    }
+
+    public User updateUser(User user) {
         return userRepo.save(user);
     }
 
-    public User updateUser(User user ){
-//        User Study_Buddy=userRepo.findById(user.getUserid()).get();
-
-       return userRepo.save(user);
+    public void deleteByUserId(Long userId) {
+        userRepo.delete(getUserById(userId));
     }
 
-    public void deleteUser(Long id){
-        userRepo.deleteById(id);
+    public User findUserByEmailAndPasswd(User user) {
+        return userRepo.findUserByEmailAndPasswd(user.getEmail(), user.getPasswd());
     }
-
 }

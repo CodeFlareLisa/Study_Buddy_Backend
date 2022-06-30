@@ -12,19 +12,12 @@ import javax.persistence.*;
 @Entity
 public class Notes {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long notesId;
 
     private String title;
     private String cat;
     private String content;
     private Long setId;
-
-    /*@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "set_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Sets sets; //Sets need to be implemented*/
-
-
+    private Long userId;
 }

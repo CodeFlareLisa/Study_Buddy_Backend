@@ -8,9 +8,6 @@ import java.util.List;
 
 @Repository
 public interface FlashCardsRepo extends JpaRepository<FlashCards, Long>{
-    List<FlashCards> findBysetId(Long setId);
+    List<FlashCards> findBySetId(Long setId);
     FlashCards findByfCardId(Long fCardId);
-
-    void deleteByfCardId(Long fCardId);
-
 }

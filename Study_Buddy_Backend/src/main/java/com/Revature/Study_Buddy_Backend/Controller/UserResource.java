@@ -2,59 +2,75 @@ package com.Revature.Study_Buddy_Backend.Controller;
 
 import com.Revature.Study_Buddy_Backend.Model.User;
 import com.Revature.Study_Buddy_Backend.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserResource {
 
-    @Autowired
     private UserService userService;
+
     @GetMapping
-    public ResponseEntity<List<User>>getAllUser(){
-       return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
-
+    public ResponseEntity<List<User>> getAllUser() {
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
+
     @GetMapping("/{userid}")
-    public ResponseEntity<User>getUserById(@PathVariable("userid")Long id){
-        User user= userService.getUserById(id);
-        if(user!=null){
-            return new ResponseEntity<>(user,HttpStatus.OK);
-        }
-
-         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
+    public ResponseEntity<User> getUserById(@PathVariable("userid") Long userId) {
+        try{
+            User user = userService.getUserById(userId);
+            if(user != null) {
+               return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }catch(Exception ignore){}
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PostMapping("/add")
-    public ResponseEntity<User>addUser(@RequestBody User user){
-        return new ResponseEntity<>(userService.addUser(user),HttpStatus.CREATED);
+    public ResponseEntity<Boolean> addUser(@RequestBody User user) {
+        List<User> userList = userService.getAllUser();
+        for(User findUser : userList){
+            if(findUser.getEmail().equals(user.getEmail())){
+                return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+            }
+        }
+        userService.addUser(user);
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
+
     @PutMapping("/update")
-    public ResponseEntity<User>updateUser(@RequestBody User user) {
-
-        User userexist = userService.getUserById(user.getUserid());
-        if (userexist != null) {
-            return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
-
-        }
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        try {
+            User findUser = userService.getUserById(user.getUserId());
+            if(findUser != null){
+                return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+            }
+        } catch (Exception ignore) {}
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @DeleteMapping("/delete/{id}")
 
-   public ResponseEntity<?>deleteUser(@PathVariable("id") Long id){
-        User userexist1=userService.getUserById(id);
-        if(userexist1!=null) {
-            userService.deleteUser(id);
+    @DeleteMapping("/delete/{userid}")
+    public ResponseEntity<?> deleteUser(@PathVariable("userid") Long userId) {
+        try {
+            userService.deleteByUserId(userId);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception error) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-
-
+    @PostMapping("/finduser")
+    public ResponseEntity<User> findUserByEmailAndPasswd(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(userService.findUserByEmailAndPasswd(user), HttpStatus.OK);
+        } catch (Exception error) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }

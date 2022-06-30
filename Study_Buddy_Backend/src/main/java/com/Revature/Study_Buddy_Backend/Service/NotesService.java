@@ -17,8 +17,8 @@ public class NotesService {
         return notesRepo.findAll();
     }
 
-    public Notes getNotesById(Long id){
-        return notesRepo.findById(id).get();
+    public Notes getNotesById(Long notesId){
+        return notesRepo.findBynotesId(notesId);
     }
 
     public Notes addNotes(Notes notes) {
@@ -29,7 +29,13 @@ public class NotesService {
         return notesRepo.save(notes);
     }
 
-    public void deleteNotes(Long notesId){
-        notesRepo.deleteBynotesId(notesId);
+    public void deleteNotes(Long notes){
+        notesRepo.deleteById(notes);
     }
+
+    public List<Notes> getNotesByUserIds(Long userId){
+        return notesRepo.findByUserId(userId);
+    }
+
+    public List<Notes> getNotesBySetIdAndUserId(Long setId, Long userId){return notesRepo.findBySetIdAndUserId(setId, userId); }
 }
